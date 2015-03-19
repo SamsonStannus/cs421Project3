@@ -16,7 +16,7 @@ class project3
    
 
 	// Register the driver.  You must register the driver before you can use it.
-        try {
+    try {
 	    DriverManager.registerDriver ( new com.ibm.db2.jcc.DB2Driver() ) ;
 	} catch (Exception cnfe){
 	    System.out.println("Class not found");
@@ -142,89 +142,102 @@ class project3
         	String password = scanner.nextLine();
         	// Querying a table
 				try {
-
-					// ERRORs happening here aswell
-				    String passSQL = "SELECT password FROM User WHERE username = " + username;
+					System.out.println(username);
+				    String passSQL = "SELECT password FROM User WHERE username = \'" + username + "\'";
 				    System.out.println (passSQL) ;
 				    java.sql.ResultSet rs1 = statement.executeQuery ( passSQL ) ;
-				    String pass = rs1.getString (1) ;
 				    
-				    if(pass.equals(password)){
-				    	while(true){
-					    	System.out.println("----------------------------------------------------------------------------------");
-					    	System.out.println("Please Select one of the following commands or type 'q' or 'Q' to go back [123qQ]:");
-	        				System.out.println("----------------------------------------------------------------------------------");
-	        				System.out.println("1. Search for an Item");
-	        				System.out.println("2. Checkout Shopping Cart");
-	        				System.out.println("3. Edit Account Info");
+				    while ( rs1.next ( ) ) {
+				    	String pass = rs1.getString (1) ;
+				    
+					    System.out.println(pass);
+		
+					    
+					    if(pass.equals(password)){
+					    	while(true){
+						    	System.out.println("----------------------------------------------------------------------------------");
+						    	System.out.println("Please Select one of the following commands or type 'q' or 'Q' to go back [123qQ]:");
+		        				System.out.println("----------------------------------------------------------------------------------");
+		        				System.out.println("1. Search for an Item");
+		        				System.out.println("2. Checkout Shopping Cart");
+		        				System.out.println("3. Edit Account Info");
 
-	        				String response2 = scanner.nextLine();
-	        				if(response2.equals("q") || response2.equals("Q")) {
-	        					break;
-	        				}
-	        				if(response2.equals("1")){
-	        					System.out.println("--------------------------------------------------------------------------------");
-					        	System.out.println("Search by selecting one of the following or type 'q' or 'Q' to go back [12345qQ]:");
-					        	System.out.println("--------------------------------------------------------------------------------");
-					        	System.out.println("1. List all Items for sale");
-					        	System.out.println("2. Search by Item Name");
-					        	System.out.println("3. Search by Category");
-					        	System.out.println("4. Search by Brand");
-					        	System.out.println("5. Search by User");
-					        	System.out.println("6. Search by Price");
-	        					
+		        				String response2 = scanner.nextLine();
+		        				if(response2.equals("q") || response2.equals("Q")) {
+		        					break;
+		        				}
+		        				if(response2.equals("1")){
+		        					System.out.println("--------------------------------------------------------------------------------");
+						        	System.out.println("Search by selecting one of the following or type 'q' or 'Q' to go back [12345qQ]:");
+						        	System.out.println("--------------------------------------------------------------------------------");
+						        	System.out.println("1. List all Items for sale");
+						        	System.out.println("2. Search by Item Name");
+						        	System.out.println("3. Search by Category");
+						        	System.out.println("4. Search by Brand");
+						        	System.out.println("5. Search by User");
+						        	System.out.println("6. Search by Price");
+		        					
 
-					        	String response3 = scanner.nextLine();
-					        	if(response3.equals("q") || response2.equals("Q")) {
-	        						continue;
-	        					}
-	        					if(response2.equals("1")){
-	        						String querySQL = "SELECT p_name, price FROM Products WHERE sold_flag = \'FALSE\' ";
-								    System.out.println (querySQL) ;
-								    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;
-								    String[] items = new String[100];
-								    int p = 0;
-								    while ( rs2.next ( ) ) {
-										items[p] = rs2.getString (p+1) ;
-										System.out.println(p+1 + ". " + items[p]);
-										p++;
-								    }
+						        	String response3 = scanner.nextLine();
+						        	if(response3.equals("q") || response2.equals("Q")) {
+		        						continue;
+		        					}
+		        					if(response3.equals("1")){
+		        						String querySQL = "SELECT p_name, price FROM Products WHERE sold_flag = \'FALSE\' ";
+		        						System.out.println ("--------------------") ;
+									    System.out.println ("Listing All Products") ;
+									    System.out.println ("--------------------") ;
+									    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
+									    int p = 1;			   
+									    while ( rs2.next ( ) ) {
+											String p_name = rs2.getString (1) ;
+											int price = rs2.getInt (2) ;
+											System.out.println( p+ ". " + p_name + ": $" + price);
+											p++;
+											/* 
+												TODO: make options to go back to previous menu
 
+											*/
+		
+									    }
+
+			        				}
+			        				if(response3.equals("2")){
+			        					
+			        				}
+			        				if(response3.equals("3")){
+		        					
+			        				}
+			        				if(response3.equals("4")){
+			        					
+			        				}
+			        				if(response3.equals("5")){
+		        					
+			        				}
+			        				if(response3.equals("6")){
+			        					
+			        				}
 		        				}
 		        				if(response2.equals("2")){
 		        					
 		        				}
 		        				if(response2.equals("3")){
-	        					
-		        				}
-		        				if(response2.equals("4")){
 		        					
 		        				}
-		        				if(response2.equals("5")){
-	        					
-		        				}
-		        				if(response2.equals("6")){
-		        					
-		        				}
+		        				/*
+
+
+		        				TODO
+
+
+		        				*/
+
 	        				}
-	        				if(response2.equals("2")){
-	        					
-	        				}
-	        				if(response2.equals("3")){
-	        					
-	        				}
-	        				/*
-
-
-	        				TODO
-
-
-	        				*/
-        				}
-        				continue;
-				    }else{
-				    	System.out.println ("Username and/or Password don't match anything in database");
-				    	continue;
+	        				continue;
+					    }else{
+					    	System.out.println ("Username and/or Password don't match anything in database");
+					    	continue;
+						}
 					}
 				} catch (SQLException e)
 				    {
@@ -262,6 +275,7 @@ class project3
         	DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = new Date();
 			String since = dateformat.format(date);
+
         	
         	try {
         		/* 
@@ -269,11 +283,11 @@ class project3
 					TODO
 					Need to think of a way to increment userID... for now it's a fixed number....
 
-					Error's are occuring here don't know why
 
         		*/
-        		
-			    String newAccount = "INSERT INTO User VALUES (" + 1006 + ", " + username + ", " + password + " , " + email + " , " + address + " , " + city + " , " + p_code + ", \'0.0\' , " + since + " )";
+				System.out.println(since);
+        		int u_id = 1006;
+			    String newAccount = "INSERT INTO User VALUES (" + u_id+ ",\'" + username + "\', \'" + password + "\' , \'" + email + "\', \'" + address + "\', \'" + city + "\', \'" + p_code + "\', 5.0 ,\'" + since + "\')";
 			   	statement.executeUpdate ( newAccount ) ;
 			    System.out.println("Awesome! Your Account is almost set up.");
 
@@ -308,7 +322,8 @@ class project3
 					Need to think of a way to increment payID... for now it's a fixed number....
 
         		*/
-			    String newAccount = "INSERT INTO User VALUES (" + 2006 + ", " + f_name + ", " + l_name + " ,  " + address + " , " + city + " , " + c_numb + ", " + b_name + " )";
+				int p_id = 2006;
+			    String newAccount = "INSERT INTO PaymentInfo VALUES (" + p_id + ", \'" + f_name + "\', \'" + l_name + "\', \'" + address + "\', \'" + city + "\',\'" + p_code +  "\',\'" + c_numb + "\', \'" + b_name + "\')";
 			   	statement.executeUpdate ( newAccount ) ;
 			    System.out.println("Awesome! Your Account is almost set up.");
 			    System.out.println("Your new account is totally set up, we'll send back to the first prompt to sign in again!");
@@ -330,33 +345,33 @@ class project3
         }
     }
 	// Querying a table
-	try {
-	    String querySQL = "SELECT user_id, username, email FROM User WHERE username = \'samsonIsCool\'";
-	    System.out.println (querySQL) ;
-	    java.sql.ResultSet rs = statement.executeQuery ( querySQL ) ;
-	    while ( rs.next ( ) ) {
-		int id = rs.getInt (1) ;
-		String username = rs.getString (2);
-		String email = rs.getString (3);
-		System.out.println ("id:  " + id + " username: " + username + " email: " + email);
-	    }
-	    System.out.println ("DONE");
-	} catch (SQLException e)
-	    {
-		sqlCode = e.getErrorCode(); // Get SQLCODE
-		sqlState = e.getSQLState(); // Get SQLSTATE
+	// try {
+	    // String querySQL = "SELECT user_id, username, email FROM User WHERE username = \'samsonIsCool\'";
+	//     System.out.println (querySQL) ;
+	//     java.sql.ResultSet rs = statement.executeQuery ( querySQL ) ;
+	//     while ( rs.next ( ) ) {
+	// 	int id = rs.getInt (1) ;
+	// 	String username = rs.getString (2);
+	// 	String email = rs.getString (3);
+	// 	System.out.println ("id:  " + id + " username: " + username + " email: " + email);
+	//     }
+	//     System.out.println ("DONE");
+	// } catch (SQLException e)
+	//     {
+	// 	sqlCode = e.getErrorCode(); // Get SQLCODE
+	// 	sqlState = e.getSQLState(); // Get SQLSTATE
                 
-		// Your code to handle errors comes here;
-		// something more meaningful than a print would be good
-		System.out.println("Code: " + sqlCode + "  sqlState: " + sqlState);
-	    }
+	// 	// Your code to handle errors comes here;
+	// 	// something more meaningful than a print would be good
+	// 	System.out.println("Code: " + sqlCode + "  sqlState: " + sqlState);
+	//     }
 
 	//Updating a table
     try {
-	    String updateSQL = "UPDATE User SET username = \'samsonIsAlright\' WHERE user_id = 1";
-	    System.out.println(updateSQL);
-	    statement.executeUpdate(updateSQL);
-	    System.out.println("DONE");
+	    // String updateSQL = "UPDATE User SET username = \'samsonIsAlright\' WHERE user_id = 1";
+	    // System.out.println(updateSQL);
+	    // statement.executeUpdate(updateSQL);
+	    // System.out.println("DONE");
 
 	    // Dropping a tables
 	    for(int d = 0; d<tableName.length; d++){
