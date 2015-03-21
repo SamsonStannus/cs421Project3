@@ -126,7 +126,7 @@ class project3
     int start_p_id = 2005;
     int start_t_id = 30010;
     while (true) {
-    	//DON'T TOUCH THE LOGO, it looks weird here, but that's cause \ needs to be excaped
+    	//DON'T TOUCH THE LOGO, it looks weird here, but that's cause \ needs to be escaped
     	System.out.println(" _____               _ _               ___           _   ");
 		System.out.println("/__   \\_ __ __ _  __| (_)_ __   __ _  / _ \\___   ___| |_ ");
 		System.out.println("  / /\\/ '__/ _` |/ _` | | '_ \\ / _` |/ /_)/ _ \\ / __| __|");
