@@ -753,7 +753,7 @@ class project3
 			    String newAccount = "INSERT INTO PaymentInfo VALUES (" + start_p_id + ", \'" + f_name + "\', \'" + l_name + "\', \'" + address + "\', \'" + city + "\',\'" + p_code +  "\',\'" + c_numb + "\', \'" + b_name + "\')";
 			   	statement.executeUpdate ( newAccount ) ;
 			    System.out.println("Awesome! Your Account is almost set up.");
-			    System.out.println("Your new account is totally set up, we'll send back to the first prompt to sign in again!");
+			    System.out.println("Your new account is totally set up, we'll send you back to the first prompt to sign in again!");
 			    continue;
 			} catch (SQLException e)
 		    {
