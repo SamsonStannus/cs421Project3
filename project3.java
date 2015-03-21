@@ -124,7 +124,7 @@ class project3
     Scanner scanner=new Scanner(System.in);
 	int start_u_id = 1005;
     int start_p_id = 2005;
-    int start_t_id = 300010;
+    int start_t_id = 30010;
     while (true) {
     	//DON'T TOUCH THE LOGO, it looks weird here, but that's cause \ needs to be excaped
     	System.out.println(" _____               _ _               ___           _   ");
