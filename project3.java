@@ -8,6 +8,7 @@ class project3
 {
     public static void main (String [] args) throws SQLException
     {
+    
 	// Unique table names.  Either the user supplies a unique identifier as a command line argument, or the program makes one up.
 	String tableNameFake = "";
         int sqlCode=0;      // Variable to hold SQLCODE
@@ -121,7 +122,17 @@ class project3
                 System.out.println("Code: " + sqlCode + "  sqlState: " + sqlState);
             }
     Scanner scanner=new Scanner(System.in);
+	int start_u_id = 1005;
+    int start_p_id = 2005;
+    int start_t_id = 300010;
     while (true) {
+    	//DON'T TOUCH THE LOGO, it looks weird here, but that's cause \ needs to be excaped
+    	System.out.println(" _____               _ _               ___           _   ");
+		System.out.println("/__   \\_ __ __ _  __| (_)_ __   __ _  / _ \\___   ___| |_ ");
+		System.out.println("  / /\\/ '__/ _` |/ _` | | '_ \\ / _` |/ /_)/ _ \\ / __| __|");
+		System.out.println(" / /  | | | (_| | (_| | | | | | (_| / ___/ (_) |\\__ \\ |_ ");
+		System.out.println(" \\/   |_|  \\__,_|\\__,_|_|_| |_|\\__, \\/    \\___(_)___/\\__|");
+		System.out.println("                               |___/                     ");
     	System.out.println("------------------------------------------------------------------------------");
         System.out.println("Please Select one of the following commands or type 'q' or 'Q' to quit [12qQ]:");
         System.out.println("------------------------------------------------------------------------------");
@@ -140,88 +151,507 @@ class project3
         	String username = scanner.nextLine();
         	System.out.println("Enter Password (case sensitive)");
         	String password = scanner.nextLine();
-        	// Querying a table
+        	
 				try {
 					System.out.println(username);
-				    String passSQL = "SELECT password FROM User WHERE username = \'" + username + "\'";
-				    System.out.println (passSQL) ;
+				    String passSQL = "SELECT password, user_id FROM User WHERE username = \'" + username + "\'";
 				    java.sql.ResultSet rs1 = statement.executeQuery ( passSQL ) ;
 				    
 				    while ( rs1.next ( ) ) {
 				    	String pass = rs1.getString (1) ;
-				    
-					    System.out.println(pass);
+				    	int userIdentity = rs1.getInt(2) ;
+				    	System.out.println(userIdentity);
 		
 					    
 					    if(pass.equals(password)){
 					    	while(true){
-						    	System.out.println("----------------------------------------------------------------------------------");
-						    	System.out.println("Please Select one of the following commands or type 'q' or 'Q' to go back [123qQ]:");
-		        				System.out.println("----------------------------------------------------------------------------------");
+						    	System.out.println("-----------------------------------------------------------------------------------");
+						    	System.out.println("Please Select one of the following commands or type 'q' or 'Q' to go back [12345qQ]:");
+		        				System.out.println("-----------------------------------------------------------------------------------");
 		        				System.out.println("1. Search for an Item");
-		        				System.out.println("2. Checkout Shopping Cart");
-		        				System.out.println("3. Edit Account Info");
+		        				System.out.println("2. Show Shopping Cart");
+		        				System.out.println("3. Put an Item up for Sale");
+		        				System.out.println("4. Check Transaction History");
+		        				System.out.println("5. Edit Account Info");
 
 		        				String response2 = scanner.nextLine();
 		        				if(response2.equals("q") || response2.equals("Q")) {
 		        					break;
 		        				}
 		        				if(response2.equals("1")){
-		        					System.out.println("--------------------------------------------------------------------------------");
-						        	System.out.println("Search by selecting one of the following or type 'q' or 'Q' to go back [12345qQ]:");
-						        	System.out.println("--------------------------------------------------------------------------------");
-						        	System.out.println("1. List all Items for sale");
-						        	System.out.println("2. Search by Item Name");
-						        	System.out.println("3. Search by Category");
-						        	System.out.println("4. Search by Brand");
-						        	System.out.println("5. Search by User");
-						        	System.out.println("6. Search by Price");
-		        					
-
-						        	String response3 = scanner.nextLine();
-						        	if(response3.equals("q") || response2.equals("Q")) {
-		        						continue;
-		        					}
-		        					if(response3.equals("1")){
-		        						String querySQL = "SELECT p_name, price FROM Products WHERE sold_flag = \'FALSE\' ";
-		        						System.out.println ("--------------------") ;
-									    System.out.println ("Listing All Products") ;
-									    System.out.println ("--------------------") ;
-									    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
-									    int p = 1;			   
-									    while ( rs2.next ( ) ) {
-											String p_name = rs2.getString (1) ;
-											int price = rs2.getInt (2) ;
-											System.out.println( p+ ". " + p_name + ": $" + price);
-											p++;
-											/* 
-												TODO: make options to go back to previous menu
-
-											*/
-		
-									    }
-
-			        				}
-			        				if(response3.equals("2")){
+		        					while(true){
+			        					System.out.println("---------------------------------------------------------------------------------");
+							        	System.out.println("Search by selecting one of the following or type 'q' or 'Q' to go back [123456qQ]:");
+							        	System.out.println("---------------------------------------------------------------------------------");
+							        	System.out.println("1. List all Items for sale");
+							        	System.out.println("2. Search by Item Name");
+							        	System.out.println("3. Search by Category");
+							        	System.out.println("4. Search by Brand");
+							        	System.out.println("5. Search by User");
+							        	System.out.println("6. Search by Price");
 			        					
-			        				}
-			        				if(response3.equals("3")){
-		        					
-			        				}
-			        				if(response3.equals("4")){
-			        					
-			        				}
-			        				if(response3.equals("5")){
-		        					
-			        				}
-			        				if(response3.equals("6")){
-			        					
-			        				}
-		        				}
+
+							        	String response3 = scanner.nextLine();
+							        	if(response3.equals("q") || response2.equals("Q")) {
+			        						break;
+			        					}
+			        					if(response3.equals("1")){
+			        						String querySQL = "SELECT Products.p_name, Products.price, Sells.quantity, Products.p_id FROM Products, Sells WHERE sold_flag = \'FALSE\' AND Products.p_id = Sells.p_id";
+			        						System.out.println ("--------------------") ;
+										    System.out.println ("Listing All Products") ;
+										    System.out.println ("--------------------") ;
+										    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
+										    int[] items = new int[100];
+										    int p = 1;			   
+										    while ( rs2.next ( ) ) {
+												String p_name = rs2.getString (1) ;
+												float price = rs2.getFloat (2) ;
+												int quantity = rs2.getInt(3) ;
+												int id = rs2.getInt(4);
+												items[(p-1)] = id;
+												System.out.print( p+ ". " + p_name + ": $");
+												System.out.printf("%.2f", price);
+												System.out.println(" Stock: " + quantity);
+
+												p++;
+						
+										    }
+										    System.out.println("Select by the number of the item to add to cart or '0' to cancel:");		        					
+							        		int selection = scanner.nextInt();
+							        		if(selection == 0){
+							        			continue;
+							        		}
+							        		else{
+							        			
+							        			String getStock = "SELECT quantity FROM Sells WHERE p_id = " + items[(selection-1)];
+							        			java.sql.ResultSet rs3 = statement.executeQuery ( getStock ) ;	
+							        			while( rs3.next ( ) ){
+							        				int stock = rs3.getInt(1) - 1;
+
+							        				if( stock == 0){
+							        					String sold = "UPDATE Products SET sold_flag = \'TRUE\' WHERE p_id = " + items[(selection-1)];
+							        					statement.executeUpdate(sold);
+							        					
+							        				}
+
+							        				
+								        			
+								        			String updateSQL = "UPDATE Sells SET quantity = " + stock + " WHERE p_id = " + items[(selection-1)];
+								        			statement.executeUpdate(updateSQL);
+								        			
+
+								        			
+								        			String cart = "SELECT cart_id FROM Owns WHERE user_id = " + userIdentity;
+								        			java.sql.ResultSet rs4 = statement.executeQuery ( cart ) ;	
+								        			while( rs4.next ( ) ){
+								        				int cart_id = rs4.getInt(1);
+								        				
+								        				String addToCart = "INSERT INTO Contains VALUES (" + cart_id + " ," + items[(selection-1)] + ", 1)";
+								        				statement.executeUpdate(addToCart);
+								        				
+								        				System.out.println("Item added to cart!");
+								        				break;
+								        			}	
+								        			break;
+							        			}
+										   		continue;
+							        		}
+							        		
+
+				        				}
+				        				if(response3.equals("2")){
+				        					System.out.println("Type the Item Name:");		        					
+							        		String search_name = scanner.nextLine();
+							        		String querySQL = "SELECT Products.p_name, Products.price, Sells.quantity, Products.p_id FROM Products, Sells WHERE sold_flag = \'FALSE\' AND Products.p_id = Sells.p_id AND Products.p_name = \'" + search_name +"\'";
+			        						System.out.println ("-----------------------------------------") ;
+										    System.out.println ("Listing All Products with the Name " + search_name +":") ;
+										    System.out.println ("-----------------------------------------") ;
+										    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
+										    int[] items = new int[100];
+										    int p = 1;			   
+										    while ( rs2.next ( ) ) {
+												String p_name = rs2.getString (1) ;
+												float price = rs2.getFloat (2) ;
+												int quantity = rs2.getInt(3) ;
+												int id = rs2.getInt(4);
+												items[(p-1)] = id;
+												System.out.print( p+ ". " + p_name + ": $");
+												System.out.printf("%.2f", price);
+												System.out.println(" Stock: " + quantity);
+												p++;
+
+										    }
+										    System.out.println("Select by the number of the item to add to cart or '0' to cancel:");		        					
+							        		int selection = scanner.nextInt();
+							        		if(selection == 0){
+							        			continue;
+							        		}
+							        		else{
+							        			
+							        			String getStock = "SELECT quantity FROM Sells WHERE p_id = " + items[(selection-1)];
+							        			java.sql.ResultSet rs3 = statement.executeQuery ( getStock ) ;	
+							        			while( rs3.next ( ) ){
+							        				int stock = rs3.getInt(1) - 1;
+
+							        				if( stock == 0){
+							        					String sold = "UPDATE Products SET sold_flag = \'TRUE\' WHERE p_id = " + items[(selection-1)];
+							        					statement.executeUpdate(sold);
+							        					
+							        				}
+
+							        				
+								        			
+								        			String updateSQL = "UPDATE Sells SET quantity = " + stock + " WHERE p_id = " + items[(selection-1)];
+								        			statement.executeUpdate(updateSQL);
+								        			
+
+								        			
+								        			String cart = "SELECT cart_id FROM Owns WHERE user_id = " + userIdentity;
+								        			java.sql.ResultSet rs4 = statement.executeQuery ( cart ) ;	
+								        			while( rs4.next ( ) ){
+								        				int cart_id = rs4.getInt(1);
+								        				
+								        				String addToCart = "INSERT INTO Contains VALUES (" + cart_id + " ," + items[(selection-1)] + ", 1)";
+								        				statement.executeUpdate(addToCart);
+								        				
+								        				System.out.println("Item added to cart!");
+								        				break;
+								        			}	
+								        			break;
+							        			}
+										   		continue;
+							        		}
+				        				
+				        				}
+				        				if(response3.equals("3")){
+				        					System.out.println("Type the Name of a Category:");		        					
+							        		String cat_name = scanner.nextLine();
+				        					String querySQL = "SELECT Products.p_name, Products.price, Sells.quantity, Products.p_id FROM Products, Sells, Categories, GroupedIn WHERE sold_flag = \'FALSE\' AND Products.p_id = Sells.p_id AND Categories.cat_name = \'" + cat_name + "\' AND Categories.cat_id = GroupedIn.cat_id AND Products.p_id = GroupedIn.p_id";
+			        						System.out.println ("-----------------------------------------") ;
+										    System.out.println ("Listing All Products in " + cat_name + ":") ;
+										    System.out.println ("-----------------------------------------") ;
+										    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
+										    int[] items = new int[100];
+										    int p = 1;			   
+										    while ( rs2.next ( ) ) {
+												String p_name = rs2.getString (1) ;
+												float price = rs2.getFloat (2) ;
+												int quantity = rs2.getInt(3) ;
+												int id = rs2.getInt(4);
+												items[(p-1)] = id;
+												System.out.print( p+ ". " + p_name + ": $");
+												System.out.printf("%.2f", price);
+												System.out.println(" Stock: " + quantity);
+												p++;
+												
+			
+										    }
+										    System.out.println("Select by the number of the item to add to cart or '0' to cancel:");		        					
+							        		int selection = scanner.nextInt();
+							        		if(selection == 0){
+							        			continue;
+							        		}
+							        		else{
+							        			
+							        			String getStock = "SELECT quantity FROM Sells WHERE p_id = " + items[(selection-1)];
+							        			java.sql.ResultSet rs3 = statement.executeQuery ( getStock ) ;	
+							        			while( rs3.next ( ) ){
+							        				int stock = rs3.getInt(1) - 1;
+
+							        				if( stock == 0){
+							        					String sold = "UPDATE Products SET sold_flag = \'TRUE\' WHERE p_id = " + items[(selection-1)];
+							        					statement.executeUpdate(sold);
+							        					
+							        				}
+
+							        				
+								        			
+								        			String updateSQL = "UPDATE Sells SET quantity = " + stock + " WHERE p_id = " + items[(selection-1)];
+								        			statement.executeUpdate(updateSQL);
+								        			
+
+								        			
+								        			String cart = "SELECT cart_id FROM Owns WHERE user_id = " + userIdentity;
+								        			java.sql.ResultSet rs4 = statement.executeQuery ( cart ) ;	
+								        			while( rs4.next ( ) ){
+								        				int cart_id = rs4.getInt(1);
+								        				
+								        				String addToCart = "INSERT INTO Contains VALUES (" + cart_id + " ," + items[(selection-1)] + ", 1)";
+								        				statement.executeUpdate(addToCart);
+								        				
+								        				System.out.println("Item added to cart!");
+								        				break;
+								        			}	
+								        			break;
+							        			}
+										   		continue;
+							        		}
+			        						
+				        				}
+				        				if(response3.equals("4")){
+				        					System.out.println("Type the Name of a Brand:");		        					
+							        		String brand_name = scanner.nextLine();
+				        					String querySQL = "SELECT Products.p_name, Products.price, Sells.quantity, Products.p_id FROM Products, Sells, Brands, BrandedBy WHERE sold_flag = \'FALSE\' AND Products.p_id = Sells.p_id AND Brands.brand_name = \'" + brand_name + "\' AND Brands.brand_id = BrandedBy.brand_id AND Products.p_id = BrandedBy.p_id";
+			        						System.out.println ("-----------------------------------------") ;
+										    System.out.println ("Listing All Products in " + brand_name + ":") ;
+										    System.out.println ("-----------------------------------------") ;
+										    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
+										    int[] items = new int[100];
+										    int p = 1;			   
+										    while ( rs2.next ( ) ) {
+												String p_name = rs2.getString (1) ;
+												float price = rs2.getFloat (2) ;
+												int quantity = rs2.getInt(3) ;
+												int id = rs2.getInt(4);
+												items[(p-1)] = id;
+												System.out.print( p+ ". " + p_name + ": $");
+												System.out.printf("%.2f", price);
+												System.out.println(" Stock: " + quantity);
+												p++;
+												
+										    }
+				        					System.out.println("Select by the number of the item to add to cart or '0' to cancel:");		        					
+							        		int selection = scanner.nextInt();
+							        		if(selection == 0){
+							        			continue;
+							        		}
+							        		else{
+							        			
+							        			String getStock = "SELECT quantity FROM Sells WHERE p_id = " + items[(selection-1)];
+							        			java.sql.ResultSet rs3 = statement.executeQuery ( getStock ) ;	
+							        			while( rs3.next ( ) ){
+							        				int stock = rs3.getInt(1) - 1;
+
+							        				if( stock == 0){
+							        					String sold = "UPDATE Products SET sold_flag = \'TRUE\' WHERE p_id = " + items[(selection-1)];
+							        					statement.executeUpdate(sold);
+							        					
+							        				}
+
+							        				
+								        			
+								        			String updateSQL = "UPDATE Sells SET quantity = " + stock + " WHERE p_id = " + items[(selection-1)];
+								        			statement.executeUpdate(updateSQL);
+								        			
+
+								        			
+								        			String cart = "SELECT cart_id FROM Owns WHERE user_id = " + userIdentity;
+								        			java.sql.ResultSet rs4 = statement.executeQuery ( cart ) ;	
+								        			while( rs4.next ( ) ){
+								        				int cart_id = rs4.getInt(1);
+								        				
+								        				String addToCart = "INSERT INTO Contains VALUES (" + cart_id + " ," + items[(selection-1)] + ", 1)";
+								        				statement.executeUpdate(addToCart);
+								        				
+								        				System.out.println("Item added to cart!");
+								        				break;
+								        			}	
+								        			break;
+							        			}
+										   		continue;
+							        		}
+				        				}
+				        				if(response3.equals("5")){
+				        					System.out.println("Type the Name of the User:");		        					
+							        		String user_name = scanner.nextLine();
+							        		String querySQL = "SELECT Products.p_name, Products.price, Sells.quantity, Products.p_id FROM Products, Sells, User WHERE sold_flag = \'FALSE\' AND Products.p_id = Sells.p_id AND  User.user_id = Sells.user_id AND User.username = \'" + user_name +"\'";
+			        						System.out.println ("--------------------------------------") ;
+										    System.out.println ("Listing All Products By " + user_name + ":") ;
+										    System.out.println ("--------------------------------------") ;
+										    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
+										    int[] items = new int[100];
+										    int p = 1;			   
+										    while ( rs2.next ( ) ) {
+												String p_name = rs2.getString (1) ;
+												float price = rs2.getFloat (2) ;
+												int quantity = rs2.getInt(3) ;
+												int id = rs2.getInt(4);
+												items[(p-1)] = id;
+												System.out.print( p+ ". " + p_name + ": $");
+												System.out.printf("%.2f", price);
+												System.out.println(" Stock: " + quantity);
+												p++;
+												
+			
+										    }
+			        						System.out.println("Select by the number of the item to add to cart or '0' to cancel:");		        					
+							        		int selection = scanner.nextInt();
+							        		if(selection == 0){
+							        			continue;
+							        		}
+							        		else{
+							        			
+							        			String getStock = "SELECT quantity FROM Sells WHERE p_id = " + items[(selection-1)];
+							        			java.sql.ResultSet rs3 = statement.executeQuery ( getStock ) ;	
+							        			while( rs3.next ( ) ){
+							        				int stock = rs3.getInt(1) - 1;
+
+							        				if( stock == 0){
+							        					String sold = "UPDATE Products SET sold_flag = \'TRUE\' WHERE p_id = " + items[(selection-1)];
+							        					statement.executeUpdate(sold);
+							        					
+							        				}
+
+							        				
+								        			
+								        			String updateSQL = "UPDATE Sells SET quantity = " + stock + " WHERE p_id = " + items[(selection-1)];
+								        			statement.executeUpdate(updateSQL);
+								        			
+
+								        			
+								        			String cart = "SELECT cart_id FROM Owns WHERE user_id = " + userIdentity;
+								        			java.sql.ResultSet rs4 = statement.executeQuery ( cart ) ;	
+								        			while( rs4.next ( ) ){
+								        				int cart_id = rs4.getInt(1);
+								        				
+								        				String addToCart = "INSERT INTO Contains VALUES (" + cart_id + " ," + items[(selection-1)] + ", 1)";
+								        				statement.executeUpdate(addToCart);
+								        				
+								        				System.out.println("Item added to cart!");
+								        				break;
+								        			}	
+								        			break;
+							        			}
+										   		continue;
+							        		}
+				        				}
+				        				if(response3.equals("6")){
+				        					System.out.println("Look for Products under $:");		        					
+							        		String p_price = scanner.nextLine();
+							        		String querySQL = "SELECT Products.p_name, Products.price, Sells.quantity, Products.p_id FROM Products, Sells WHERE sold_flag = \'FALSE\' AND Products.p_id = Sells.p_id AND Products.price <" + p_price;
+			        						System.out.println ("--------------------------------------") ;
+										    System.out.println ("Listing All Products Under $" + p_price + ":") ;
+										    System.out.println ("--------------------------------------") ;
+										    java.sql.ResultSet rs2 = statement.executeQuery ( querySQL ) ;	
+										    int[] items = new int[100];
+										    int p = 1;			   
+										    while ( rs2.next ( ) ) {
+												String p_name = rs2.getString (1) ;
+												float price = rs2.getFloat (2) ;
+												int quantity = rs2.getInt(3) ;
+												int id = rs2.getInt(4);
+												items[(p-1)] = id;
+												System.out.print( p+ ". " + p_name + ": $");
+												System.out.printf("%.2f", price);
+												System.out.println(" Stock: " + quantity);
+												p++;
+												
+			
+										    }
+				        					System.out.println("Select by the number of the item to add to cart or '0' to cancel:");		        					
+							        		int selection = scanner.nextInt();
+							        		if(selection == 0){
+							        			continue;
+							        		}
+							        		else{
+							        			
+							        			String getStock = "SELECT quantity FROM Sells WHERE p_id = " + items[(selection-1)];
+							        			java.sql.ResultSet rs3 = statement.executeQuery ( getStock ) ;	
+							        			while( rs3.next ( ) ){
+							        				int stock = rs3.getInt(1) - 1;
+
+							        				if( stock == 0){
+							        					String sold = "UPDATE Products SET sold_flag = \'TRUE\' WHERE p_id = " + items[(selection-1)];
+							        					statement.executeUpdate(sold);
+							        					
+							        				}
+
+							        				
+								        			
+								        			String updateSQL = "UPDATE Sells SET quantity = " + stock + " WHERE p_id = " + items[(selection-1)];
+								        			statement.executeUpdate(updateSQL);
+								        			
+
+								        			
+								        			String cart = "SELECT cart_id FROM Owns WHERE user_id = " + userIdentity;
+								        			java.sql.ResultSet rs4 = statement.executeQuery ( cart ) ;	
+								        			while( rs4.next ( ) ){
+								        				int cart_id = rs4.getInt(1);
+								        				
+								        				String addToCart = "INSERT INTO Contains VALUES (" + cart_id + " ," + items[(selection-1)] + ", 1)";
+								        				statement.executeUpdate(addToCart);
+								        				
+								        				System.out.println("Item added to cart!");
+								        				break;
+								        			}	
+								        			break;
+							        			}
+										   		continue;
+							        		}
+				        				}
+				        			}
+			        			}
 		        				if(response2.equals("2")){
-		        					
+		        					String querySQL = "SELECT Products.p_name, Products.price, Contains.quantity, Products.p_id FROM Products, User, Owns, Contains WHERE Products.p_id = Contains.p_id AND Owns.user_id = " + userIdentity + " AND Contains.cart_id = Owns.cart_id";
+		        					System.out.println ("--------------------") ;
+		        					System.out.println(username + "'s Cart");
+		        					System.out.println ("--------------------") ;
+		        					java.sql.ResultSet rs3 = statement.executeQuery ( querySQL ) ;	
+		        					int cart = 1;			
+		        					float total = 0.0f;
+		        					int[] cartItems = new int[10];
+		        					// I Don't know why but this loops 5 times for each entry... hence the modulo.. 
+		        					// It works so who cares.   
+									while ( rs3.next ( ) ) {
+										String p_name = rs3.getString (1) ;
+										float price = rs3.getFloat (2) ;
+										int quantity = rs3.getInt(3) ;
+										int prod_id = rs3.getInt(4);
+										if(cart%5 == 0 ){
+											total = total + price;
+											cartItems[((cart/5)-1)] = prod_id;
+											System.out.print( cart/5 + ". " + p_name + ": $");
+											System.out.printf("%.2f", price);
+											System.out.println(" Stock: " + quantity);
+										}
+										cart++;
+									}
+									System.out.println ("--------------------") ;
+		        					System.out.print("Total is: $");
+		        					System.out.printf("%.2f", total);
+		        					System.out.println("");
+		        					System.out.println("--------------------") ;
+									System.out.println("Would you like to checkout? type 'y' for yes or 'n' for no [yn]:");		        					
+							       	String checkout = scanner.nextLine();
+							       	if(checkout.equals("y")){
+							       		
+							   //     		//Get the current date
+							   //      	DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd");
+										// Date date = new Date();
+										// String currentDate = dateformat.format(date);
+
+							   //     		//"INSERT INTO Transactions VALUES (30001, '2015-02-07', 1001, 1004)"
+							   //     		for(int index = 0; index < cartItems.length; index++){
+
+							   //     			start_t_id++;
+							   //     			String cartSQL = "SELECT user_id, price FROM Sells WHERE p_id = " + cartItems[index];
+							   //     			java.sql.ResultSet rs4 = statement.executeQuery ( querySQL ) ;	
+							   //     			while( rs4.next() ){
+
+							   //     				statement.executeUpdate () ;
+							   //     			}
+			        					
+			        						
+
+							       			
+							   //     		}
+							       		continue;
+							       	}
+							       	else{
+
+										continue;
+									}
+
+										    
+										    
 		        				}
 		        				if(response2.equals("3")){
+		        					
+		        				}
+		        				if(response2.equals("4")){
+		        					
+		        				}
+		        				if(response2.equals("5")){
 		        					
 		        				}
 		        				/*
@@ -233,9 +663,9 @@ class project3
 		        				*/
 
 	        				}
-	        				continue;
+	        				// continue;
 					    }else{
-					    	System.out.println ("Username and/or Password don't match anything in database");
+					    	System.out.println ("Incorrect Password");
 					    	continue;
 						}
 					}
@@ -246,8 +676,11 @@ class project3
 			                
 					// Your code to handle errors comes here;
 					// something more meaningful than a print would be good
-					System.out.println("Code: " + sqlCode + "  sqlState: " + sqlState);
-					System.out.println ("Username and/or Password don't match anything in database");
+					/* 
+							It's just better these stay commented out.. everything is working 
+					*/
+					// System.out.println("Code: " + sqlCode + "  sqlState: " + sqlState);
+					// System.out.println ("Username and/or Password don't match anything in database");
 				    	continue;
 				    }
 
@@ -258,9 +691,11 @@ class project3
         	System.out.println("Make an Account");
         	System.out.println("---------------");
         	System.out.println("This will take a series of steps (Since this is a fictitious service, don't enter real information)");
-        	System.out.println("Enter a Username:");
+        	System.out.println("* - Cannot leave null");
+        	System.out.println("------------------------");
+        	System.out.println("Enter a *Username:");
         	String username = scanner.nextLine();
-        	System.out.println("Enter a Password:");
+        	System.out.println("Enter a *Password:");
         	String password = scanner.nextLine();
         	System.out.println("Enter your Email:");
         	String email = scanner.nextLine();
@@ -278,18 +713,15 @@ class project3
 
         	
         	try {
-        		/* 
 
-					TODO
-					Need to think of a way to increment userID... for now it's a fixed number....
-
-
-        		*/
 				System.out.println(since);
-        		int u_id = 1006;
-			    String newAccount = "INSERT INTO User VALUES (" + u_id+ ",\'" + username + "\', \'" + password + "\' , \'" + email + "\', \'" + address + "\', \'" + city + "\', \'" + p_code + "\', 5.0 ,\'" + since + "\')";
+        		
+        		start_u_id++;
+			    String newAccount = "INSERT INTO User VALUES (" + start_u_id+ ",\'" + username + "\', \'" + password + "\' , \'" + email + "\', \'" + address + "\', \'" + city + "\', \'" + p_code + "\', 5.0 ,\'" + since + "\')";
 			   	statement.executeUpdate ( newAccount ) ;
 			    System.out.println("Awesome! Your Account is almost set up.");
+			    System.out.println("* - Cannot leave null");
+        		System.out.println("------------------------");
 
 
 			} catch (SQLException e)
@@ -307,23 +739,18 @@ class project3
         	System.out.println("-----------------");
         	System.out.println("Enter PaymentInfo");
         	System.out.println("-----------------");
-        	System.out.println("What's your First Name?:");
+        	System.out.println("What's your *First Name?:");
         	String f_name = scanner.nextLine();
-        	System.out.println("What's your Last Name?:");
+        	System.out.println("What's your *Last Name?:");
         	String l_name = scanner.nextLine();
-        	System.out.println("What's your Credit Card Number?:");
+        	System.out.println("What's your *Credit Card Number?[in the form xxxx-xxxx-xxxx-xxxx]:");
         	String c_numb = scanner.nextLine();
-        	System.out.println("What is your Bank Name?:");
+        	System.out.println("What is your *Bank Name?:");
         	String b_name = scanner.nextLine();
         	try {
-        		/* 
-
-					TODO
-					Need to think of a way to increment payID... for now it's a fixed number....
-
-        		*/
-				int p_id = 2006;
-			    String newAccount = "INSERT INTO PaymentInfo VALUES (" + p_id + ", \'" + f_name + "\', \'" + l_name + "\', \'" + address + "\', \'" + city + "\',\'" + p_code +  "\',\'" + c_numb + "\', \'" + b_name + "\')";
+				
+				start_p_id++;
+			    String newAccount = "INSERT INTO PaymentInfo VALUES (" + start_p_id + ", \'" + f_name + "\', \'" + l_name + "\', \'" + address + "\', \'" + city + "\',\'" + p_code +  "\',\'" + c_numb + "\', \'" + b_name + "\')";
 			   	statement.executeUpdate ( newAccount ) ;
 			    System.out.println("Awesome! Your Account is almost set up.");
 			    System.out.println("Your new account is totally set up, we'll send back to the first prompt to sign in again!");
