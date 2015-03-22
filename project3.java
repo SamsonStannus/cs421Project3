@@ -814,6 +814,9 @@ class project3
 //I Don't know where all of these brackets meet up... but the program works somehow..
 		        				}
 		        			}
+		        		}else {
+		        			System.out.println ("Incorrect Password");
+					    	continue;
 		        		}
 		        	}
 			    }
@@ -825,7 +828,7 @@ class project3
 					// something more meaningful than a print would be good
 
 					// It's fine, everything is totally fine don't need to uncomment this
-					
+
 					// System.out.println("Code: " + sqlCode + "  sqlState: " + sqlState);
 		    	} 
 	
